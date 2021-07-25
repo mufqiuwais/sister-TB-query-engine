@@ -128,4 +128,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-QueryEngine/UtilMongoDB.py
+/UtilMongoDB.py
