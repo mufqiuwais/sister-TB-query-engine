@@ -2,7 +2,7 @@ def mainMenu():
   isStop = False
   while not isStop:
     import socket
-    print("Welcome to Query Engine Article!")
+    print("\nWelcome to Query Engine Article!")
     print("1. Search for an article with keyword")
     print("2. Insert an Article")
     print("3. Exit")
@@ -61,6 +61,7 @@ def mainMenu():
       from typing import Collection
       import pymongo
       import UtilMongoDB
+      import string
 
       # Get the database
       db = UtilMongoDB.get_database()
@@ -78,7 +79,7 @@ def mainMenu():
 
       id_artikel = ObjectId(result.inserted_id)
 
-      punc = '''!()-[]{};:'"\, <>./?@#$%^&*_~'''
+      punc = string.punctuation + "’"
       for ele in teks:
         if ele in punc:
           teks = teks.replace(ele, " ")
@@ -105,8 +106,6 @@ def mainMenu():
         
       tokens_without_sw = [
           word for word in text_tokens if not word in stopwords.words()]
-
-      print(tokens_without_sw)
 
       for word in tokens_without_sw:
         kata_freq = word
