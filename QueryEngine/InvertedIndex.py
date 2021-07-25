@@ -6,7 +6,8 @@ from nltk.corpus import stopwords
 file = open('file.txt', encoding='utf8')
 read = file.read()
 file.seek(0)
-read
+
+print(read)
 
 # to obtain the
 # number of lines
