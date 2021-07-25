@@ -17,8 +17,6 @@ for x in InvInd:
   for id_freq in x['id_freq']:
     freq = collectionFreq.find({ "_id": id_freq})
     for y in freq:
-      # print(y)
-      for id_artikel in y['id_artikel']:
-        artikel = collectionArtikel.find({ "_id": id_artikel})
-        for z in artikel:
-          print(z)
+      artikel = collectionArtikel.find({ "_id": y['id_artikel']})
+      for z in artikel:
+        print(z)

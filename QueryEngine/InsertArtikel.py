@@ -10,7 +10,7 @@ import UtilMongoDB
 db = UtilMongoDB.get_database()
 collectionArtikel = db["artikel"]
 collectionFreq = db["freqkata"]
-collectionInvInd = db["InvIndex"]
+collectionInvInd = db["invindex"]
 
 
 judul =  input("Masukan judul: ") 
@@ -37,7 +37,7 @@ for word in words:
         counts[word] = 0
     counts[word] += 1
 
-
+teks=' '.join(UtilMongoDB.unique_list(teks.split()))
 # print(sorted(counts.keys()))
 
 # print(counts)
@@ -50,6 +50,8 @@ for i in range(1):
 tokens_without_sw = [
     word for word in text_tokens if not word in stopwords.words()]
 
+print(tokens_without_sw)
+
 for word in tokens_without_sw:
   kata_freq = word
   frequency = counts[word]
@@ -58,8 +60,30 @@ for word in tokens_without_sw:
     "id_artikel" : id_artikel,
     "frequency" : frequency
   }
-  collectionFreq.insert_one(freqkata)
+  resultFreq = collectionFreq.insert_one(freqkata)
 
-print("Insert dokumen berhasil")
+  result = collectionInvInd.find({ "kata": kata_freq })
+  lists = list(result)
+  if len(lists)==0:
+    InvIndex = {
+      "kata" : kata_freq,
+      "id_freq" : [ObjectId(resultFreq.inserted_id)]
+    }
+    collectionInvInd.insert_one(InvIndex)
+  else:
+    result = collectionInvInd.find({ "kata": kata_freq })
+    id_InvInd = ""
+    new_id_freq = ""
+    # print("jadi gimana")
+    for inv in result:
+      id_InvInd = ObjectId(inv["_id"])
+      new_id_freq = inv["id_freq"] + [ObjectId(resultFreq.inserted_id)]
+      # print(new_id_freq)
+    InvIndex ={ "$set" : {
+      "id_freq" : new_id_freq
+    }}
+    collectionInvInd.update_one({ "_id": id_InvInd }, InvIndex)
+
+print("Insert artikel berhasil")
 
 
