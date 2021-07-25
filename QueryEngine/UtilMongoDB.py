@@ -13,3 +13,9 @@ def get_database():
 
   # Create the database for our example (we will use the same database throughout the tutorial
   return client['query-engine']
+
+# function to remove redundancy/duplicate words
+def unique_list(l):
+  ulist = []
+  [ulist.append(x) for x in l if x not in ulist]
+  return ulist
